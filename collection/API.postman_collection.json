@@ -1,0 +1,101 @@
+{
+	"info": {
+		"_postman_id": "1b06f181-2a76-4af7-b2ab-9587670f82cb",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15669042"
+	},
+	"item": [
+		{
+			"name": "Create transfer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "user",
+						"value": "Test",
+						"type": "text"
+					},
+					{
+						"key": "pass",
+						"value": "12345",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountFrom\": \"6422450fac8b81336e49a67c\",\n    \"accountTo\": \"64224543ce357de490338d14\",\n    \"amount\": 5,\n    \"description\": \"Test transfer 10\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/transfer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Reports",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "pass",
+						"value": "12345",
+						"type": "text"
+					},
+					{
+						"key": "user",
+						"value": "Test",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/api/report?from=2023-01-25&to=2024-01-30",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"report"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "Test",
+							"disabled": true
+						},
+						{
+							"key": "pass",
+							"value": "12345",
+							"disabled": true
+						},
+						{
+							"key": "from",
+							"value": "2023-01-25"
+						},
+						{
+							"key": "to",
+							"value": "2024-01-30"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
