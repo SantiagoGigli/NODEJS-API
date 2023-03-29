@@ -6,7 +6,7 @@ export interface IBankAccount extends Document {
   currency: PopulatedDoc<ICurrency>;
 }
 
-const bankAccountSchema: Schema = new Schema<any>(
+const bankAccountSchema: Schema = new Schema<IBankAccount>(
   {
     amount: { type: Number, default: 0 },
     currency: {
@@ -18,4 +18,4 @@ const bankAccountSchema: Schema = new Schema<any>(
   { timestamps: true }
 );
 
-export default mongoose.model<any>('BankAccount', bankAccountSchema);
+export default mongoose.model<IBankAccount>('BankAccount', bankAccountSchema);

@@ -12,8 +12,17 @@ export interface matchQuery {
   };
 }
 
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  bankAccount: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 interface ITransaction {
-  user: any;
+  user: User;
   _id: string;
   accountFrom: string;
   accountTo: string;
@@ -132,8 +141,8 @@ export const getReport = async (req: Request, res: Response) => {
             ...acc[week],
             [userInWeek._id]: {
               email: acc[week][userInWeek._id].email,
-              percentageInternal: `${(acc[week][userInWeek._id]['internal'] * 100) / userInWeek.transactions.length}%`,
-              percentageExternal: `${(acc[week][userInWeek._id]['external'] * 100) / userInWeek.transactions.length}%`,
+              percentageInternal: `${Math.round((acc[week][userInWeek._id]['internal'] * 100) / userInWeek.transactions.length)}%`,
+              percentageExternal: `${(Math.round((acc[week][userInWeek._id]['external'] * 100) / userInWeek.transactions.length))}%`,
             },
           };
         });
@@ -252,10 +261,14 @@ export const createTransfer = async (req: Request, res: Response) => {
       { new: true }
     );
 
+    const finalAmount = responseCurrencyChange?.result || amount;
+
     await BankAccount.findByIdAndUpdate(
       { _id: accountTo },
       {
-        amount: isSameUser ? accounts[1]?.amount - amount : accounts[1]?.amount - (amount + (amount * 1) / 100),
+        amount: isSameUser
+          ? accounts[1]?.amount + finalAmount
+          : accounts[1]?.amount + (finalAmount - (amount * 1) / 100),
       },
       { new: true }
     );
@@ -263,7 +276,7 @@ export const createTransfer = async (req: Request, res: Response) => {
     const payloadToSave = {
       ...req.body,
       user: accountUser1._id,
-      amount: responseCurrencyChange?.result || amount,
+      amount: finalAmount,
     };
 
     const newTransfer = new Transfer(payloadToSave);
